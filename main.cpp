@@ -2,7 +2,7 @@
 This was a really crappy program, the code is very
 amateurly formatted, I am sorry.
 Please bare with me I am still learning C++ and C
-Anyways, this is battleships in C++! Its like some 
+Anyways, this is battleships in C++! Its like some
 random thing I decided to make
 */
 
@@ -11,28 +11,29 @@ using namespace std;
 
 
 // DEVELOPER NOTE: compile using "gcc main.cpp -lstdc++ -o main.exe"
+// DEVELOPER NOTE 2: for linux compile using "gcc main.cpp -lstdc++ -o main" and run using "./main"
 
-/* 
+/*
 The human_ships array is the array the
-player has for their ships. 
+player has for their ships.
 They have 5 ships max, can change.
 */
-string human_ships[5]; 
+string human_ships[6];
 
-/* 
+/*
 The computer_ships array is the array the
-computer has for their ships. 
+computer has for their ships.
 They have 5 ships max, can change.
 Should be same as human_ships to be fair.
 */
-string computer_ships[5];
+string computer_ships[6];
 
-/* human_ships_has is the ship choices the player has, 
+/* human_ships_has is the ship choices the player has,
 currently 0 before the game starts.
 */
 int human_ships_has = 0;
 
-/* computer_ships_has is the ship choices the computer has, 
+/* computer_ships_has is the ship choices the computer has,
 currently 0 before the game starts.
 */
 int computer_ships_has = 0;
@@ -62,51 +63,70 @@ bool endsWith(const std::string &mainStr, const std::string &toMatch)
     }
 }
 
-void computer_choose_ships() 
+bool computer_choose_ships()
 {
+    string happyPrompt;
     cout << "Your ships have been chosen! They are: ";
     for(int i = 0; i<5; i++) {
-        cout << human_ships[i];
+        cout << human_ships[i] << ", ";
     }
     cout << endl;
+    cout << "Are you happy with this? [Y/n]: ";
+    cin >> happyPrompt;
+    cout << endl;
+    if (happyPrompt == "n" || happyPrompt == "N")
+    {
+      cout << "Please restart the game." << endl;
+      return 0;
+    } else if (happyPrompt == "y" || happyPrompt == "Y") {
+      cout << "That is great! Moving on..." << endl;
+    } else {
+      cout << "Unknown Answer '" << happyPrompt << "'." << endl;
+      computer_choose_ships();
+    }
     /*
         TODO TOMORROW: Make computer choose ships too.
     */
 }
 
-void human_choose_ships() 
-{
-    string coordinates;
-    cout << "Choose ship co-ordinates for Ship " << human_ships_has << ": ";
-    cin >> coordinates;
-    cout << endl;
-    if (startsWith(coordinates, "a") || startsWith(coordinates, "b") || startsWith(coordinates, "c") || startsWith(coordinates, "d") || startsWith(coordinates, "e") || startsWith(coordinates, "A") || startsWith(coordinates, "B") || startsWith(coordinates, "C") || startsWith(coordinates, "D") || startsWith(coordinates, "E")) 
-    {
-        if (endsWith(coordinates, "1") || endsWith(coordinates, "2") || endsWith(coordinates, "3") || endsWith(coordinates, "4") || endsWith(coordinates, "5"))
-        {
-            // All good! Add it to the array!
-            // WAITING TO IMPLEMENT FUNCTION TO CHECK IF SHIP ALREADY EXISTS, NOT YET THO...
-            human_ships[human_ships_has] = coordinates;
-            cout << "Ship was successfully added to the array!" << endl;
-        } else {
-            cout << "Error! Ship Co-Ordinates MUST end with any number between 1 and 5" << endl;
-            --human_ships_has; // RESET SHIPS HAS
-        }
-    } else {
-        cout << "Error! Ship Co-Ordinates MUST start with any letter between A and Z, uppercase or lowercase" << endl;
-        --human_ships_has; // RESET SHIPS HAS
-    }
-}
-
-int main() 
+void human_choose_ships()
 {
     cout << "Welcome to Battleships v0.0.1!" << endl;
     cout << "Choose your ships, player!" << endl;
-    while (human_ships_has <= 5) 
+    while (human_ships_has != 5)
     {
-        ++human_ships_has;
-        human_choose_ships();
+      ++human_ships_has;
+      string coordinates;
+      cout << "Choose ship co-ordinates for Ship " << human_ships_has << ": ";
+      cin >> coordinates;
+      cout << endl;
+      if (coordinates.size() > 2)
+      {
+        cout << "Error! Co-ordinates must only be 2 digits long." << endl;
+        --human_ships_has;
+      }
+      if (startsWith(coordinates, "a") || startsWith(coordinates, "b") || startsWith(coordinates, "c") || startsWith(coordinates, "d") || startsWith(coordinates, "e") || startsWith(coordinates, "A") || startsWith(coordinates, "B") || startsWith(coordinates, "C") || startsWith(coordinates, "D") || startsWith(coordinates, "E"))
+      {
+          if (endsWith(coordinates, "1") || endsWith(coordinates, "2") || endsWith(coordinates, "3") || endsWith(coordinates, "4") || endsWith(coordinates, "5"))
+          {
+              // All good! Add it to the array!
+              // WAITING TO IMPLEMENT FUNCTION TO CHECK IF SHIP ALREADY EXISTS, NOT YET THO...
+              human_ships[human_ships_has] = coordinates;
+              cout << "Ship was successfully added to the array!" << endl;
+          } else {
+              cout << "Error! Ship Co-Ordinates MUST end with any number between 1 and 5" << endl;
+              --human_ships_has; // RESET SHIPS HAS
+          }
+      } else {
+          cout << "Error! Ship Co-Ordinates MUST start with any letter between A and Z, uppercase or lowercase" << endl;
+          --human_ships_has; // RESET SHIPS HAS
+      }
     }
+}
+
+int main()
+{
+    human_choose_ships();
     computer_choose_ships();
     return 0;
 }
