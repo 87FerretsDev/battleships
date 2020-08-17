@@ -104,22 +104,23 @@ void human_choose_ships()
       {
         cout << "Error! Co-ordinates must only be 2 digits long." << endl;
         --human_ships_has;
-      }
-      if (startsWith(coordinates, "a") || startsWith(coordinates, "b") || startsWith(coordinates, "c") || startsWith(coordinates, "d") || startsWith(coordinates, "e") || startsWith(coordinates, "A") || startsWith(coordinates, "B") || startsWith(coordinates, "C") || startsWith(coordinates, "D") || startsWith(coordinates, "E"))
-      {
-          if (endsWith(coordinates, "1") || endsWith(coordinates, "2") || endsWith(coordinates, "3") || endsWith(coordinates, "4") || endsWith(coordinates, "5"))
+      } else {
+          if (startsWith(coordinates, "a") || startsWith(coordinates, "b") || startsWith(coordinates, "c") || startsWith(coordinates, "d") || startsWith(coordinates, "e") || startsWith(coordinates, "A") || startsWith(coordinates, "B") || startsWith(coordinates, "C") || startsWith(coordinates, "D") || startsWith(coordinates, "E"))
           {
-              // All good! Add it to the array!
-              // WAITING TO IMPLEMENT FUNCTION TO CHECK IF SHIP ALREADY EXISTS, NOT YET THO...
-              human_ships[human_ships_has] = coordinates;
-              cout << "Ship was successfully added to the array!" << endl;
+              if (endsWith(coordinates, "1") || endsWith(coordinates, "2") || endsWith(coordinates, "3") || endsWith(coordinates, "4") || endsWith(coordinates, "5"))
+              {
+                  // All good! Add it to the array!
+                  // WAITING TO IMPLEMENT FUNCTION TO CHECK IF SHIP ALREADY EXISTS, NOT YET THO...
+                  human_ships[human_ships_has] = coordinates;
+                  cout << "Ship was successfully added to the array!" << endl;
+              } else {
+                  cout << "Error! Ship Co-Ordinates MUST end with any number between 1 and 5" << endl;
+                  --human_ships_has; // RESET SHIPS HAS
+              }
           } else {
-              cout << "Error! Ship Co-Ordinates MUST end with any number between 1 and 5" << endl;
+              cout << "Error! Ship Co-Ordinates MUST start with any letter between A and Z, uppercase or lowercase" << endl;
               --human_ships_has; // RESET SHIPS HAS
           }
-      } else {
-          cout << "Error! Ship Co-Ordinates MUST start with any letter between A and Z, uppercase or lowercase" << endl;
-          --human_ships_has; // RESET SHIPS HAS
       }
     }
 }
